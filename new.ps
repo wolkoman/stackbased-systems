@@ -30,25 +30,6 @@
   min_dist_index
 } def
 
-% takes [array] and [element] and ouputes the index of element in array, else -1
-/find_in_array {
-  /param_element exch def
-  /param_array exch def
-  /j 0 def
-  /find_in_array_result -1 def
-
-  param_array {
-    param_element eq {
-      /find_in_array_result j def
-    } if
-
-    j 1 add
-    /j exch def
-  } forall
-
-  find_in_array_result
-} def
-
 /dijkstra {
 
   % Loop until all nodes are visited
@@ -93,9 +74,9 @@
 } def
 
 
-/infinity 99999 def
+/infinity 256 dup exp def
 
-/distances [ 0 infinity infinity infinity infinity infinity infinity ] def
+/distances [ infinity 0 infinity infinity infinity infinity infinity ] def
 /prev [ 0 0 0 0 0 0 0 ] def
 /visited [true true true true true true true] def 
 
@@ -107,6 +88,7 @@
   [ infinity infinity infinity infinity 20  0   5  ]
   [ infinity infinity infinity infinity infinity infinity 0  ]
 ] def
+
 
 % Define an array with some values
 dijkstra
