@@ -111,8 +111,13 @@
     /y angle edge_iterator mul sin radius mul def
 
     newpath
-    x y 5 0 360 arc
-    fill
+    x y 10 0 360 arc
+    stroke
+
+    /Helvetica findfont
+    12 scalefont setfont
+    x 3 sub y 4 sub moveto
+    edge_iterator ( ) cvs show
 
     edge_iterator =
   } for
