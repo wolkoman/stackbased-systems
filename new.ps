@@ -88,6 +88,35 @@
   distances
 } def
 
+/draw_circle {
+
+} def
+
+/draw_graph {
+  /num_of_circles edges length def
+  /radius 100 def
+  /angle 360 num_of_circles div def
+  num_of_circles =
+  radius =
+  angle =
+  
+  << /PageSize [400 400] >> setpagedevice
+  3 setlinewidth
+  1 0 0 setrgbcolor
+  200 200 translate
+
+  0 1 num_of_circles 1 sub {
+    /edge_iterator exch def
+    /x angle edge_iterator mul cos radius mul def
+    /y angle edge_iterator mul sin radius mul def
+
+    newpath
+    x y 5 0 360 arc
+    fill
+
+    edge_iterator =
+  } for
+} def
 
 /infinity 99999 def
 
@@ -103,8 +132,8 @@
 
 
 % Define an array with some values
-edges 0 dijkstra
-{=} forall
+% edges 0 dijkstra {=} forall
+draw_graph
 quit
 
 % 0. Committen
