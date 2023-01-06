@@ -84,8 +84,6 @@
       } if
     } for
   } forall
-
-  distances
 } def
 
 /calculate_coordinates {
@@ -97,13 +95,17 @@
 
 
 /draw_edge {
+  0 0 0 setrgbcolor
+  {
+    1 0 0 setrgbcolor
+  } if
+
   % draw plain edge
   newpath
   calculate_coordinates /y1 exch def /x1 exch def
   calculate_coordinates /y2 exch def /x2 exch def
   x1 y1 moveto
   x2 y2 lineto
-  0 0 0 setrgbcolor
   stroke
   closepath
 
@@ -120,7 +122,6 @@
   newx engel 25 sub cos 10 mul add
   newy engel 25 sub sin 10 mul add lineto
   newx newy lineto
-  0 0 0 setrgbcolor
   fill
   closepath
 
@@ -129,7 +130,6 @@
   y2 y1 add 0.5 mul engel 90 add sin 5 mul add
   moveto
   /Helvetica findfont 8 scalefont setfont
-  0 0 0 setrgbcolor
   edges i get j get (         ) cvs show
   
 
@@ -152,7 +152,8 @@
       /j exch def
       edges i get j get infinity ne
       edges i get j get 0 ne and {
-        i j draw_edge
+        i (  ) cvs print ( ) print j (  ) cvs print (: ) print
+        i j prev j get i eq draw_edge
       } if
     } for 
 
@@ -182,19 +183,20 @@
 /infinity 99999 def
 
 /edges [  
-  [ 0 infinity 10  infinity infinity infinity infinity infinity ]
-  [ infinity 0  infinity 5   infinity 15  20 infinity ]
-  [ infinity 5  0   20  infinity infinity infinity infinity ]
-  [ infinity infinity infinity 0   15  infinity infinity infinity ]
-  [ infinity infinity infinity infinity 0   infinity 10 infinity ]
+  [ 0 infinity 10  infinity infinity infinity infinity ]
+  [ infinity 0  infinity 5   infinity 15  20 ]
+  [ infinity 5  0   20  infinity infinity infinity ]
+  [ infinity infinity infinity 0   15  infinity infinity ]
+  [ infinity infinity infinity infinity 0   infinity 10 ]
   [ infinity infinity infinity infinity 20  0   5 infinity  ]
-  [ infinity infinity infinity infinity infinity infinity 0 infinity ]
-  [ infinity infinity infinity infinity infinity infinity infinity 0 ]
+  [ infinity infinity infinity infinity infinity infinity 0 ]
 ] def
 
 
+
+
 % Define an array with some values
-% edges 0 dijkstra {=} forall
+edges 0 dijkstra clear
 draw_graph
 quit
 
