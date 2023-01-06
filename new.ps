@@ -97,41 +97,72 @@
 
 
 /draw_edge {
+  % draw plain edge
   newpath
-  calculate_coordinates moveto
-  calculate_coordinates lineto
+  calculate_coordinates /y1 exch def /x1 exch def
+  calculate_coordinates /y2 exch def /x2 exch def
+  x1 y1 moveto
+  x2 y2 lineto
   0 0 0 setrgbcolor
   stroke
   closepath
+
+  % calculate arrow position
+  /engel y2 y1 sub x2 x1 sub atan def
+  /newx x1 engel cos 10 mul add def
+  /newy y1 engel sin 10 mul add def
+  
+  % draw edge arrow
+  newpath
+  newx newy moveto
+  newx engel 25 add cos 10 mul add
+  newy engel 25 add sin 10 mul add lineto
+  newx engel 25 sub cos 10 mul add
+  newy engel 25 sub sin 10 mul add lineto
+  newx newy lineto
+  0 0 0 setrgbcolor
+  fill
+  closepath
+
+  % draw edge label  
+  x2 x1 add 0.5 mul engel 90 add cos 5 mul add
+  y2 y1 add 0.5 mul engel 90 add sin 5 mul add
+  moveto
+  /Helvetica findfont 8 scalefont setfont
+  0 0 0 setrgbcolor
+  edges i get j get (         ) cvs show
+  
+
 } def
 
 /draw_graph {
   /num_of_nodes edges length def
   /radius 100 def
   /angle 360 num_of_nodes div def
-  num_of_nodes =
-  radius =
-  angle =
   
+  % page setup
   << /PageSize [400 400] >> setpagedevice
   1 setlinewidth
   200 200 translate
-
+  
+  % draw edges
   0 1 num_of_nodes 1 sub {
     /i exch def
-
     0 1 num_of_nodes 1 sub {
       /j exch def
-      edges i get j get infinity ne {
+      edges i get j get infinity ne
+      edges i get j get 0 ne and {
         i j draw_edge
       } if
     } for 
 
   } for
 
+  % draw nodes
   0 1 num_of_nodes 1 sub {
     /i exch def
     
+    % draw node circle
     newpath
     i calculate_coordinates 10 0 360 arc
     0 0 0 setrgbcolor
@@ -140,25 +171,25 @@
     1 1 1 setrgbcolor
     fill
 
-    /Helvetica findfont
-    12 scalefont setfont
+    % draw node label
     i calculate_coordinates exch 3 sub exch 4 sub moveto
     0 0 0 setrgbcolor
-    i ( ) cvs show
-    i =
+    /Helvetica findfont 12 scalefont setfont
+    i (      ) cvs show
   } for
 } def
 
 /infinity 99999 def
 
 /edges [  
-  [ 0 infinity 10  infinity infinity infinity infinity ]
-  [ infinity 0  infinity 5   infinity 15  20 ]
-  [ infinity 5  0   20  infinity infinity infinity ]
-  [ infinity infinity infinity 0   15  infinity infinity ]
-  [ infinity infinity infinity infinity 0   infinity 10 ]
-  [ infinity infinity infinity infinity 20  0   5  ]
-  [ infinity infinity infinity infinity infinity infinity 0 5  ]
+  [ 0 infinity 10  infinity infinity infinity infinity infinity ]
+  [ infinity 0  infinity 5   infinity 15  20 infinity ]
+  [ infinity 5  0   20  infinity infinity infinity infinity ]
+  [ infinity infinity infinity 0   15  infinity infinity infinity ]
+  [ infinity infinity infinity infinity 0   infinity 10 infinity ]
+  [ infinity infinity infinity infinity 20  0   5 infinity  ]
+  [ infinity infinity infinity infinity infinity infinity 0 infinity ]
+  [ infinity infinity infinity infinity infinity infinity infinity 0 ]
 ] def
 
 
@@ -172,3 +203,4 @@ quit
 % 2. Nodes brauchen Labels
 % 3. Nodes müssen entsprechend der Edges verbunden werden
 % 4. Pfad einzeichnen
+% 5. Gewichtungen der Edges
