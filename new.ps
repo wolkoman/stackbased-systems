@@ -88,38 +88,64 @@
   distances
 } def
 
-/draw_circle {
+/calculate_coordinates {
+    /node exch def
+    /x angle node mul cos radius mul def
+    /y angle node mul sin radius mul def
+    x y
+} def
 
+
+/draw_edge {
+  newpath
+  calculate_coordinates moveto
+  calculate_coordinates lineto
+  0 0 0 setrgbcolor
+  stroke
+  closepath
 } def
 
 /draw_graph {
-  /num_of_circles edges length def
+  /num_of_nodes edges length def
   /radius 100 def
-  /angle 360 num_of_circles div def
-  num_of_circles =
+  /angle 360 num_of_nodes div def
+  num_of_nodes =
   radius =
   angle =
   
   << /PageSize [400 400] >> setpagedevice
-  3 setlinewidth
-  1 0 0 setrgbcolor
+  1 setlinewidth
   200 200 translate
 
-  0 1 num_of_circles 1 sub {
-    /edge_iterator exch def
-    /x angle edge_iterator mul cos radius mul def
-    /y angle edge_iterator mul sin radius mul def
+  0 1 num_of_nodes 1 sub {
+    /i exch def
 
+    0 1 num_of_nodes 1 sub {
+      /j exch def
+      edges i get j get infinity ne {
+        i j draw_edge
+      } if
+    } for 
+
+  } for
+
+  0 1 num_of_nodes 1 sub {
+    /i exch def
+    
     newpath
-    x y 10 0 360 arc
+    i calculate_coordinates 10 0 360 arc
+    0 0 0 setrgbcolor
     stroke
+    i calculate_coordinates 10 0 360 arc
+    1 1 1 setrgbcolor
+    fill
 
     /Helvetica findfont
     12 scalefont setfont
-    x 3 sub y 4 sub moveto
-    edge_iterator ( ) cvs show
-
-    edge_iterator =
+    i calculate_coordinates exch 3 sub exch 4 sub moveto
+    0 0 0 setrgbcolor
+    i ( ) cvs show
+    i =
   } for
 } def
 
